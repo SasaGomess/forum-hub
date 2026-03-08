@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql
+    container_name: "forum-hub-db"
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_FORUM_HUB}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/forum_hub
+
+volumes:
+  mysql_data:
+
+
