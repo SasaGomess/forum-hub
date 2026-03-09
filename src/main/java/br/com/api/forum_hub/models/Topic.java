@@ -1,5 +1,6 @@
 package br.com.api.forum_hub.models;
 
+import br.com.api.forum_hub.models.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,10 +20,12 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String tittle;
+    @Column(unique = true)
     private String message;
     private LocalDateTime creationDate;
-    private String status;
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;

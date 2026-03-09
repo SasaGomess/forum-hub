@@ -17,8 +17,8 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    private String categoria;
+    private String name;
+    private String category;
 
     @OneToMany
     private List<Topic> topics = new ArrayList<>();

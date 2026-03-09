@@ -1,0 +1,48 @@
+package br.com.api.forum_hub.services;
+
+import br.com.api.forum_hub.dtos.RegisterTopicData;
+import br.com.api.forum_hub.dtos.ResponseTopicDTO;
+import br.com.api.forum_hub.models.Course;
+import br.com.api.forum_hub.models.Topic;
+import br.com.api.forum_hub.models.User;
+import br.com.api.forum_hub.models.enums.Status;
+import br.com.api.forum_hub.repositories.CourseRepository;
+import br.com.api.forum_hub.repositories.TopicRepository;
+import br.com.api.forum_hub.repositories.UserRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+@Service
+public class RegisterTopic {
+
+    private TopicRepository topicRepository;
+    private CourseRepository courseRepository;
+    private UserRepository userRepository;
+
+    public RegisterTopic(TopicRepository topicRepository, CourseRepository courseRepository, UserRepository userRepository) {
+        this.topicRepository = topicRepository;
+        this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
+    }
+
+    public ResponseTopicDTO register(RegisterTopicData data){
+        if (!userRepository.existsById(data.authorId())) throw new ValidationException("Autor não foi encontrado");
+
+        User user = userRepository.getReferenceById(data.authorId());
+        Course course = courseRepository.findByName(data.course());
+
+        if (course == null){
+            throw new ValidationException("Curso não foi encontrado.");
+        }
+
+        if (topicRepository.existsByTittleAndMessage(data.tittle(), data.message())) throw new ValidationException("Tópico já existente com mesmo nome e menssagem!");
+
+        var topic = new Topic(null, data.tittle(), data.message(), LocalDateTime.now(), Status.AWAITING_RESPONSE, user, course, null);
+
+        topicRepository.save(topic);
+
+        return new ResponseTopicDTO(topic);
+    }
+}
