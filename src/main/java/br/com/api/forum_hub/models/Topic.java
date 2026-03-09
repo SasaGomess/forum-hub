@@ -1,5 +1,6 @@
 package br.com.api.forum_hub.models;
 
+import br.com.api.forum_hub.dtos.UpdateTopicDTO;
 import br.com.api.forum_hub.models.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,4 +36,10 @@ public class Topic {
 
     @OneToMany(mappedBy = "topic")
     private List<Response> responses = new ArrayList<>();
+
+
+    public void update(UpdateTopicDTO data){
+        this.tittle = data.tittle();
+        this.message = data.message();
+    }
 }

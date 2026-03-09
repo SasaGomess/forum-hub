@@ -1,11 +1,13 @@
 package br.com.api.forum_hub.controllers;
 
-import br.com.api.forum_hub.dtos.RegisterTopicData;
+import br.com.api.forum_hub.dtos.RegisterTopicDTO;
 import br.com.api.forum_hub.dtos.ResponseTopicDTO;
+import br.com.api.forum_hub.dtos.UpdateTopicDTO;
 import br.com.api.forum_hub.models.Topic;
 import br.com.api.forum_hub.repositories.TopicRepository;
-import br.com.api.forum_hub.services.FindTopic;
-import br.com.api.forum_hub.services.RegisterTopic;
+import br.com.api.forum_hub.services.FindTopicUseCase;
+import br.com.api.forum_hub.services.RegisterTopicUseCase;
+import br.com.api.forum_hub.services.UpdateTopicUseCase;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -14,25 +16,26 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Stream;
 
 @RequestMapping("/topicos")
 @RestController
 public class TopicController {
-    private RegisterTopic registerTopic;
+    private RegisterTopicUseCase registerTopicUseCase;
     private TopicRepository repository;
-    private FindTopic findTopic;
+    private FindTopicUseCase findTopicUseCase;
+    private UpdateTopicUseCase updateTopicUseCase;
 
-    public TopicController(RegisterTopic registerTopic, TopicRepository repository, FindTopic findTopic) {
-        this.registerTopic = registerTopic;
+    public TopicController(RegisterTopicUseCase registerTopicUseCase, TopicRepository repository, FindTopicUseCase findTopicUseCase, UpdateTopicUseCase updateTopicUseCase) {
+        this.registerTopicUseCase = registerTopicUseCase;
         this.repository = repository;
-        this.findTopic = findTopic;
+        this.findTopicUseCase = findTopicUseCase;
+        this.updateTopicUseCase = updateTopicUseCase;
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ResponseTopicDTO> register(@RequestBody @Valid RegisterTopicData data, UriComponentsBuilder uriBuilder){
-        ResponseTopicDTO responseTopic = registerTopic.register(data);
+    public ResponseEntity<ResponseTopicDTO> register(@RequestBody @Valid RegisterTopicDTO data, UriComponentsBuilder uriBuilder){
+        ResponseTopicDTO responseTopic = registerTopicUseCase.register(data);
 
         URI uri = uriBuilder.path("/topicos/{id}")
                 .buildAndExpand(responseTopic.id())
@@ -52,11 +55,13 @@ public class TopicController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseTopicDTO> findTopic(@PathVariable Long id){
-        return ResponseEntity.ok(findTopic.find(id));
+        return ResponseEntity.ok(findTopicUseCase.find(id));
     }
 
-    
-
-
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseTopicDTO> update(@PathVariable Long id, @RequestBody UpdateTopicDTO updateTopicDTO){
+        ResponseTopicDTO updatedTopic = updateTopicUseCase.update(updateTopicDTO, id);
+        return ResponseEntity.ok(updatedTopic);
+    }
 
 }

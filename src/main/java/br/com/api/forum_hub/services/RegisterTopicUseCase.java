@@ -1,6 +1,6 @@
 package br.com.api.forum_hub.services;
 
-import br.com.api.forum_hub.dtos.RegisterTopicData;
+import br.com.api.forum_hub.dtos.RegisterTopicDTO;
 import br.com.api.forum_hub.dtos.ResponseTopicDTO;
 import br.com.api.forum_hub.models.Course;
 import br.com.api.forum_hub.models.Topic;
@@ -12,22 +12,21 @@ import br.com.api.forum_hub.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
-public class RegisterTopic {
+public class RegisterTopicUseCase {
 
     private TopicRepository topicRepository;
     private CourseRepository courseRepository;
     private UserRepository userRepository;
 
-    public RegisterTopic(TopicRepository topicRepository, CourseRepository courseRepository, UserRepository userRepository) {
+    public RegisterTopicUseCase(TopicRepository topicRepository, CourseRepository courseRepository, UserRepository userRepository) {
         this.topicRepository = topicRepository;
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
     }
 
-    public ResponseTopicDTO register(RegisterTopicData data){
+    public ResponseTopicDTO register(RegisterTopicDTO data){
         if (!userRepository.existsById(data.authorId())) throw new ValidationException("Autor não foi encontrado");
 
         User user = userRepository.getReferenceById(data.authorId());

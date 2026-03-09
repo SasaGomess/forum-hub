@@ -7,10 +7,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FindTopic {
+public class FindTopicUseCase {
     private TopicRepository topicRepository;
 
-    public FindTopic(TopicRepository topicRepository) {
+    public FindTopicUseCase(TopicRepository topicRepository) {
         this.topicRepository = topicRepository;
     }
 
