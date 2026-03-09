@@ -1,5 +1,6 @@
 package br.com.api.forum_hub.models;
 
+import br.com.api.forum_hub.dtos.UserRegisterDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,13 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "User")
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
 
@@ -30,6 +32,13 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "author")
     private List<Response> responses = new ArrayList<>();
+
+    public User(UserRegisterDTO data, String passwordEncoded) {
+        this.email = data.email();
+        this.name = data.name();
+        this.password = passwordEncoded;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
