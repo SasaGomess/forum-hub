@@ -3,6 +3,9 @@ package br.com.api.forum_hub.infra.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -39,6 +42,12 @@ public class SecurityConfigurations {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    //Um provider manager implementa autenticationManager. São e possui diversos AuthenticationProviders que decidem se a autenticação está correta ou não
+    @Bean
+    public AuthenticationManager authenticationManager(){
+        return new ProviderManager();
     }
 
 }
