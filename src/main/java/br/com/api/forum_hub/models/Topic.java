@@ -25,7 +25,9 @@ public class Topic {
     private String tittle;
     @Column(unique = true)
     private String message;
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)

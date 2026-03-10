@@ -3,6 +3,7 @@ package br.com.api.forum_hub.services;
 import br.com.api.forum_hub.dtos.ResponseTopicDTO;
 import br.com.api.forum_hub.dtos.UpdateTopicDTO;
 import br.com.api.forum_hub.models.Topic;
+import br.com.api.forum_hub.models.User;
 import br.com.api.forum_hub.repositories.CourseRepository;
 import br.com.api.forum_hub.repositories.TopicRepository;
 import br.com.api.forum_hub.repositories.UserRepository;
@@ -19,10 +20,10 @@ public class UpdateTopicUseCase {
         this.topicRepository = topicRepository;
     }
 
-    public ResponseTopicDTO update(UpdateTopicDTO data, Long id){
+    public ResponseTopicDTO update(UpdateTopicDTO data, Long id, User userAuth){
         if (id == null) throw new ValidationException("Id inválido");
 
-        Topic topic = topicRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum tópico foi encontrado"));
+        Topic topic = topicRepository.findByIdAndAuthor(id, userAuth).orElseThrow(() -> new EntityNotFoundException("Nenhum tópico foi encontrado"));
 
         topic.update(data);
         topicRepository.save(topic);

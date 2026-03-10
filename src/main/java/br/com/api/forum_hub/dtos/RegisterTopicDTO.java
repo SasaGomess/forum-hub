@@ -12,8 +12,6 @@ public record RegisterTopicDTO(
         @JsonAlias(value = "mensagem")
         String message,
         @NotNull
-        @JsonAlias(value = "autorId")
-        Long authorId,
         @NotBlank
         @JsonAlias(value = "nomeCurso")
         String course

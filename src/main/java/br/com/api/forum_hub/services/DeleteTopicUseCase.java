@@ -1,6 +1,7 @@
 package br.com.api.forum_hub.services;
 
 import br.com.api.forum_hub.models.Topic;
+import br.com.api.forum_hub.models.User;
 import br.com.api.forum_hub.repositories.TopicRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,10 @@ public class DeleteTopicUseCase {
         this.repository = repository;
     }
 
-    public void delete(Long id){
+    public void delete(Long id, User userAuth){
         if (id == null) throw new ValidationException("Id inválido");
 
-        Topic topic = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tópico não encontrado"));
+        Topic topic = repository.findByIdAndAuthor(id, userAuth).orElseThrow(() -> new EntityNotFoundException("Tópico não encontrado"));
 
         repository.delete(topic);
     }

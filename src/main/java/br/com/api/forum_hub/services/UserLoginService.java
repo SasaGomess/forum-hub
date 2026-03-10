@@ -22,11 +22,11 @@ public class UserLoginService {
     }
 
     public ResponseDataJWT login(UserRegisterDTO registerData) {
-       var userAuthentication = new UsernamePasswordAuthenticationToken(registerData.password(), null);
+       var userAuthentication = new UsernamePasswordAuthenticationToken(registerData.email(), registerData.password());
        var authenticationToken = manager.authenticate(userAuthentication);
 
        var token = tokenService.generateToken((User) authenticationToken.getPrincipal());
 
-       return new ResponseDataJWT(token, "Berear");
+       return new ResponseDataJWT(token, "Bearer");
     }
 }

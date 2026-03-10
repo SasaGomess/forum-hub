@@ -26,10 +26,10 @@ public class RegisterTopicUseCase {
         this.userRepository = userRepository;
     }
 
-    public ResponseTopicDTO register(RegisterTopicDTO data){
-        if (!userRepository.existsById(data.authorId())) throw new ValidationException("Autor não foi encontrado");
+    public ResponseTopicDTO register(RegisterTopicDTO data, User userAuth){
+        if (!userRepository.existsById(userAuth.getId())) throw new ValidationException("Autor não foi encontrado");
 
-        User user = userRepository.getReferenceById(data.authorId());
+        User user = userRepository.getReferenceById(userAuth.getId());
         Course course = courseRepository.findByName(data.course());
 
         if (course == null){

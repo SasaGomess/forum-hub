@@ -29,31 +29,37 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     // Filtro de autorização
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
         var tokenJwt = recuperarToken(request);
 
-        if (!tokenJwt.isBlank()){
-            //Pega o email do usuário
+        if (tokenJwt != null) {
+
             String email = tokenService.getSubject(tokenJwt);
-            Optional<User> optionalUser = repository.findByEmail(email);
 
-            if (optionalUser.isPresent()){
-                var user = optionalUser.get();
-                var userToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(userToken);
-            }
+            var user = repository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+            var authentication = new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    user.getAuthorities()
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private String recuperarToken(HttpServletRequest request){
+    private String recuperarToken(HttpServletRequest request) {
         var authorization = request.getHeader("Authorization");
 
-        if (!authorization.isBlank()){
-           return authorization.replace("Berear ", "");
+        if (authorization != null) {
+            return authorization.replace("Bearer ", "");
         }
-        return "";
+        return null;
     }
 }

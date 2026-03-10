@@ -1,6 +1,8 @@
 package br.com.api.forum_hub.models;
 
+import br.com.api.forum_hub.dtos.CreateCourseDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -22,4 +24,9 @@ public class Course {
 
     @OneToMany
     private List<Topic> topics = new ArrayList<>();
+
+    public Course(CreateCourseDTO data) {
+        this.name = data.name();
+        this.category = data.category();
+    }
 }
