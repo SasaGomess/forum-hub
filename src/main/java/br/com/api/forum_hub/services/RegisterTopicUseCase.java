@@ -38,7 +38,7 @@ public class RegisterTopicUseCase {
 
         if (topicRepository.existsByTittleAndMessage(data.tittle(), data.message())) throw new ValidationException("Tópico já existente com mesmo nome e menssagem!");
 
-        var topic = new Topic(null, data.tittle(), data.message(), LocalDateTime.now(), Status.AWAITING_RESPONSE, user, course, null);
+        var topic = new Topic(null, data.tittle(), data.message(), LocalDateTime.now(), Status.AGUARDANDO_RESPOSTA, user, course, null);
 
         topicRepository.save(topic);
 

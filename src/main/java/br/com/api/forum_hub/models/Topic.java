@@ -29,9 +29,11 @@ public class Topic {
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
     private Course course;
 
     @OneToMany(mappedBy = "topic")

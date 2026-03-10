@@ -27,6 +27,6 @@ public class UpdateTopicUseCase {
         topic.update(data);
         topicRepository.save(topic);
 
-        return new ResponseTopicDTO(topic.getId(), topic.getTittle(), topic.getMessage(), topic.getStatus().getStatusPortugues(), topic.getCourse().getName(), topic.getCreationDate());
+        return new ResponseTopicDTO(topic.getId(), topic.getTittle(), topic.getMessage(), topic.getStatus(), topic.getCourse().getName(), topic.getCreationDate());
     }
 }

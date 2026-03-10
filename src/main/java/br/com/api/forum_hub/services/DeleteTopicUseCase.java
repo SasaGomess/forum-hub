@@ -3,7 +3,9 @@ package br.com.api.forum_hub.services;
 import br.com.api.forum_hub.models.Topic;
 import br.com.api.forum_hub.repositories.TopicRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DeleteTopicUseCase {
     private TopicRepository repository;
 
