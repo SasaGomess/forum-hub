@@ -1,11 +1,10 @@
 package br.com.api.forum_hub.models;
 
-import br.com.api.forum_hub.dtos.UpdateTopicDTO;
+import br.com.api.forum_hub.dtos.TopicUpdateDTO;
 import br.com.api.forum_hub.models.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class Topic {
     private List<Response> responses = new ArrayList<>();
 
 
-    public void update(UpdateTopicDTO data){
+    public void update(TopicUpdateDTO data){
         this.tittle = data.tittle();
         this.message = data.message();
     }
