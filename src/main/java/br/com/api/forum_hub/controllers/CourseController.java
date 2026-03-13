@@ -4,6 +4,7 @@ import br.com.api.forum_hub.dtos.*;
 import br.com.api.forum_hub.models.Course;
 import br.com.api.forum_hub.repositories.CourseRepository;
 import br.com.api.forum_hub.services.ValidationException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +40,16 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> listAll(){
-        List<Course> allTopics = repository.findAll();
-        return ResponseEntity.ok(allTopics);
+    public ResponseEntity<List<CourseResponseDTO>> listAll(){
+        List<Course> allCourses = repository.findAll();
+        List<CourseResponseDTO> allCoursesDto = allCourses.stream().map(CourseResponseDTO::new).toList();
+        return ResponseEntity.ok(allCoursesDto);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
+        if(!repository.existsById(id)) throw new EntityNotFoundException("Não existe nenhum curso com esse id");
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

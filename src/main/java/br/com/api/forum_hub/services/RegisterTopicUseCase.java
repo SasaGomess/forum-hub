@@ -30,6 +30,7 @@ public class RegisterTopicUseCase {
         if (!userRepository.existsById(userAuth.getId())) throw new ValidationException("Autor não foi encontrado");
 
         User user = userRepository.getReferenceById(userAuth.getId());
+        System.out.println(user);
         Course course = courseRepository.findByName(data.course());
 
         if (course == null){

@@ -64,7 +64,7 @@ public class TopicController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicResponseDTO> update(@PathVariable Long id, @RequestBody TopicUpdateDTO topicUpdateDTO, @AuthenticationPrincipal User userAuth){
+    public ResponseEntity<TopicResponseDTO> update(@PathVariable Long id, @RequestBody @Valid TopicUpdateDTO topicUpdateDTO, @AuthenticationPrincipal User userAuth){
         TopicResponseDTO updatedTopic = updateTopicUseCase.update(topicUpdateDTO, id, userAuth);
         return ResponseEntity.ok(updatedTopic);
     }
