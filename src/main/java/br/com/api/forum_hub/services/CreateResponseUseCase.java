@@ -28,7 +28,7 @@ public class CreateResponseUseCase {
     public ResponseDTO create(ResponseRequestDTO data, User userData){
         if (!topicRepository.existsById(data.topic_id())) throw new EntityNotFoundException("Tópico não encontrado com o id enviado");
         if (responseRepository.existsByMessage(data.message())) throw new ValidationException("Já existe uma resposta com a mensagem enviada");
-        
+
         User user = userRepository.getReferenceById(userData.getId());
         Topic topic = topicRepository.getReferenceById(data.topic_id());
 
