@@ -10,6 +10,10 @@ import br.com.api.forum_hub.services.DeleteTopicUseCase;
 import br.com.api.forum_hub.services.FindTopicUseCase;
 import br.com.api.forum_hub.services.RegisterTopicUseCase;
 import br.com.api.forum_hub.services.UpdateTopicUseCase;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @RequestMapping("/topics")
 @RestController
+@SecurityRequirement(name = "topics")
 public class TopicController {
     private final RegisterTopicUseCase registerTopicUseCase;
     private final TopicRepository repository;

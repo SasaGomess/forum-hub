@@ -4,6 +4,10 @@ import br.com.api.forum_hub.dtos.*;
 import br.com.api.forum_hub.models.Course;
 import br.com.api.forum_hub.repositories.CourseRepository;
 import br.com.api.forum_hub.services.ValidationException;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -16,6 +20,7 @@ import java.util.List;
 
 @RequestMapping("/courses")
 @RestController
+@SecurityRequirement(name = "courses")
 public class CourseController {
 
     private final CourseRepository repository;
