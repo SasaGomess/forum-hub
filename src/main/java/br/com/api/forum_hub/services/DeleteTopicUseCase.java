@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteTopicUseCase {
-    private TopicRepository repository;
+    private final TopicRepository repository;
 
     public DeleteTopicUseCase(TopicRepository repository) {
         this.repository = repository;

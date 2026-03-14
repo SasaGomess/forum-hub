@@ -1,7 +1,7 @@
 package br.com.api.forum_hub.services;
 
-import br.com.api.forum_hub.dtos.RegisterTopicDTO;
-import br.com.api.forum_hub.dtos.ResponseTopicDTO;
+import br.com.api.forum_hub.dtos.TopicRegisterDTO;
+import br.com.api.forum_hub.dtos.TopicResponseDTO;
 import br.com.api.forum_hub.models.Course;
 import br.com.api.forum_hub.models.Topic;
 import br.com.api.forum_hub.models.User;
@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @Service
 public class RegisterTopicUseCase {
 
-    private TopicRepository topicRepository;
-    private CourseRepository courseRepository;
-    private UserRepository userRepository;
+    private final TopicRepository topicRepository;
+    private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
     public RegisterTopicUseCase(TopicRepository topicRepository, CourseRepository courseRepository, UserRepository userRepository) {
         this.topicRepository = topicRepository;
@@ -26,10 +26,11 @@ public class RegisterTopicUseCase {
         this.userRepository = userRepository;
     }
 
-    public ResponseTopicDTO register(RegisterTopicDTO data, User userAuth){
+    public TopicResponseDTO register(TopicRegisterDTO data, User userAuth){
         if (!userRepository.existsById(userAuth.getId())) throw new ValidationException("Autor não foi encontrado");
 
         User user = userRepository.getReferenceById(userAuth.getId());
+        System.out.println(user);
         Course course = courseRepository.findByName(data.course());
 
         if (course == null){
@@ -42,6 +43,6 @@ public class RegisterTopicUseCase {
 
         topicRepository.save(topic);
 
-        return new ResponseTopicDTO(topic);
+        return new TopicResponseDTO(topic);
     }
 }

@@ -2,6 +2,7 @@ package br.com.api.forum_hub.infra.security;
 
 import br.com.api.forum_hub.models.User;
 import br.com.api.forum_hub.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,14 +41,13 @@ public class SecurityFilter extends OncePerRequestFilter {
             String email = tokenService.getSubject(tokenJwt);
 
             var user = repository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                    .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
             var authentication = new UsernamePasswordAuthenticationToken(
                     user,
                     null,
                     user.getAuthorities()
             );
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
