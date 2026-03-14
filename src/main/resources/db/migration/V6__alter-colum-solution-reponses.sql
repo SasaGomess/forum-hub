@@ -1,0 +1,1 @@
+alter table responses modify column solution varchar(300) not null;

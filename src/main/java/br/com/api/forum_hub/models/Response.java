@@ -1,5 +1,6 @@
 package br.com.api.forum_hub.models;
 
+import br.com.api.forum_hub.dtos.ResponseUpdateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String message;
     private LocalDateTime creationDate;
     private String solution;
@@ -29,4 +31,12 @@ public class Response {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
+    public void atualizar(ResponseUpdateDTO data) {
+        if (data.message() != null){
+            this.message = data.message();
+        }
+        if (data.solution() != null){
+            this.solution = data.solution();
+        }
+    }
 }
